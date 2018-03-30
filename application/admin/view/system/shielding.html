@@ -1,0 +1,65 @@
+{extend name="public:child" /}
+{block name="style"}<link rel="stylesheet" type="text/css" href="_CSS_/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="_CSS_/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="_JS_/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="_SK_/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="_CSS_/style.css" />
+{/block}
+{block name="main"}
+<nav class="breadcrumb"><i class="Hui-iconfont">&#xe67f;</i> 首页
+	<span class="c-gray en">&gt;</span>
+	系统管理
+	<span class="c-gray en">&gt;</span>
+	基本设置
+	<a class="btn btn-success radius r" style="line-height:1.6em;margin-top:3px" href="javascript:location.replace(location.href);" title="刷新" ><i class="Hui-iconfont">&#xe68f;</i></a>
+</nav>
+<div class="page-container">
+	<div>
+		<textarea class="textarea" style="width:98%; height:300px; resize:none">她妈|它妈|他妈|你妈|去死|贱人|1090tv|10jil|21世纪中国基金会|2c8|3p|4kkasi|64惨案|64惨剧|64学生运动|64运动|64运动民國|89惨案|89惨剧|89学生运动|89运动|adult|asiangirl|avxiu|av女|awoodong|A片|bbagoori|bbagury|bdsm|binya|bitch|bozy|bunsec|bunsek|byuntae|B样|fa轮|fuck|ＦｕｃΚ|gay|hrichina|jiangzemin|j女|kgirls|kmovie|lihongzhi|MAKELOVE|NND|nude|petish|playbog|playboy|playbozi|pleybog|pleyboy|q奸|realxx|s2x|sex|shit|sorasex|tmb|TMD|tm的|tongxinglian|triangleboy|UltraSurf|unixbox|ustibet|voa</textarea>
+	</div>
+	<div class="mt-20 text-c">
+		<button name="system-base-save" id="system-base-save" class="btn btn-success radius" type="submit"><i class="icon-ok"></i> 确定</button>
+	</div>
+</div>
+{/block}
+{block name="script"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="_JS_/My97DatePicker/4.8/WdatePicker.js"></script>
+<script type="text/javascript" src="_JS_/datatables/1.10.0/jquery.dataTables.min.js"></script>
+<script type="text/javascript" src="_JS_/laypage/1.2/laypage.js"></script>
+<script type="text/javascript">
+$('.table-sort').dataTable({
+	"aaSorting": [[ 1, "desc" ]],//默认第几个排序
+	"bStateSave": true,//状态保存
+	"aoColumnDefs": [
+	  //{"bVisible": false, "aTargets": [ 3 ]} //控制列的隐藏显示
+	  {"orderable":false,"aTargets":[0,4]}// 制定列不参与排序
+	]
+});
+/*系统-栏目-添加*/
+function system_category_add(title,url,w,h){
+	layer_show(title,url,w,h);
+}
+/*系统-栏目-编辑*/
+function system_category_edit(title,url,id,w,h){
+	layer_show(title,url,w,h);
+}
+/*系统-栏目-删除*/
+function system_category_del(obj,id){
+	layer.confirm('确认要删除吗？',function(index){
+		$.ajax({
+			type: 'POST',
+			url: '',
+			dataType: 'json',
+			success: function(data){
+				$(obj).parents("tr").remove();
+				layer.msg('已删除!',{icon:1,time:1000});
+			},
+			error:function(data) {
+				console.log(data.msg);
+			},
+		});
+	});
+}
+</script>
+{/block}

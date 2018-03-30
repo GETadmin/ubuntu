@@ -1,0 +1,113 @@
+{extend name="public:child" /}
+{block name="style"}
+<link rel="stylesheet" type="text/css" href="_CSS_/H-ui.min.css" />
+<link rel="stylesheet" type="text/css" href="_CSS_/H-ui.admin.css" />
+<link rel="stylesheet" type="text/css" href="_JS_/Hui-iconfont/1.0.8/iconfont.css" />
+<link rel="stylesheet" type="text/css" href="_SK_/default/skin.css" id="skin" />
+<link rel="stylesheet" type="text/css" href="_CSS_/style.css" />{/block}
+{block name="title"}新建网站角色 - 管理员管理{/block}
+{block name="main"}<article class="page-container">
+	<form action="{:url('Admin/roleadd')}" method="post" class="form form-horizontal" id="form-admin-role-add">
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">名称：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<input type="text" class="input-text" value="" placeholder="" id="roleName" name="title">
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">状态：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<dl class="permission-list">
+					<dd>
+						<dl class="cl permission-list2">
+						
+							<dd>
+								<label class="">
+									<input type="radio" value="1" checked="checked" name="status" id="user-Character-0-0-0">
+									启用</label>
+								<label class="">
+									<input type="radio" value="0" name="status" id="user-Character-0-0-1">
+									禁用</label>
+							</dd>
+						</dl>
+						
+				</dl>
+			</div>
+		</div>
+		<div class="row cl">
+			<label class="form-label col-xs-4 col-sm-3">权限：</label>
+			<div class="formControls col-xs-8 col-sm-9">
+				<dl class="permission-list">
+				{volist name="role" id="role" }
+					<dd>
+					<dl class="cl permission-list2" style="border-bottom:none;padding:0px;">
+						
+							<h5>{$key}</h5>
+						</dl>
+						<dl class="cl permission-list2" style="padding:0px;">
+						
+							<dd style="margin:0px;">
+						{volist name="role" id="vi"}
+								<label class="list_role" >
+									<input type="checkbox" value="{$vi['id']}" name="rules[]" id="user-Character-0-0-0">
+									{$vi['name']}</label>
+									{/volist} 
+							</dd>
+						</dl>
+						</dd>
+						{/volist}
+				</dl>
+			</div>
+		</div>
+		<div class="row cl">
+			<div class="col-xs-8 col-sm-9 col-xs-offset-4 col-sm-offset-3">
+				<button type="submit" class="btn btn-success radius" id="admin-role-save" ><i class="icon-ok"></i> 确定</button>
+			</div>
+		</div>
+	</form>
+</article>{/block}
+{block name="script"}
+<!--请在下方写此页面业务相关的脚本-->
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/jquery.validate.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/validate-methods.js"></script>
+<script type="text/javascript" src="lib/jquery.validation/1.14.0/messages_zh.js"></script>
+<script type="text/javascript">
+$(function(){
+	$(".permission-list dt input:checkbox").click(function(){
+		$(this).closest("dl").find("dd input:checkbox").prop("checked",$(this).prop("checked"));
+	});
+	$(".permission-list2 dd input:checkbox").click(function(){
+		var l =$(this).parent().parent().find("input:checked").length;
+		var l2=$(this).parents(".permission-list").find(".permission-list2 dd").find("input:checked").length;
+		if($(this).prop("checked")){
+			$(this).closest("dl").find("dt input:checkbox").prop("checked",true);
+			$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",true);
+		}
+		else{
+			if(l==0){
+				$(this).closest("dl").find("dt input:checkbox").prop("checked",false);
+			}
+			if(l2==0){
+				$(this).parents(".permission-list").find("dt").first().find("input:checkbox").prop("checked",false);
+			}
+		}
+	});
+	
+	$("#form-admin-role-add").validate({
+		rules:{
+			roleName:{
+				required:true,
+			},
+		},
+		onkeyup:false,
+		focusCleanup:true,
+		success:"valid",
+		submitHandler:function(form){
+			$(form).ajaxSubmit();
+			var index = parent.layer.getFrameIndex(window.name);
+			parent.layer.close(index);
+		}
+	});
+});
+</script>
+<!--/请在上方写此页面业务相关的脚本-->{/block}
